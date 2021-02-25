@@ -16,7 +16,6 @@ def message(msg):
     # ser.close()
     print(msg)
 
-
 # This is a simple class that will help us print to the screen.
 # It has nothing to do with the joysticks, just outputting the
 # information.
@@ -62,6 +61,8 @@ pygame.joystick.init()
 textPrint = TextPrint()
 print("ready")
 print("wait for arduino")
+fineMode = False
+fineMultiplier = 0.5
 while True:
     if ser.in_waiting:
         break
@@ -121,10 +122,14 @@ while not done:
                         message(str(j) + " 0" + "x")
                     continue
                 stopped[j] = False
+                if fineMode:
+                    j *= fineMultiplier
                 message(str(j) + " " + str(axis) + "x")
+
             textPrint.unindent()
             openClawButton = 3
             closeClawButton = 1
+            # fineButton = 3
             if i == 1:
                 if joystick.get_button(openClawButton):
                     print("Claw Open")  # 66
@@ -132,6 +137,7 @@ while not done:
                 elif joystick.get_button(closeClawButton):
                     print("Claw Close")  # 86
                     message('close-clawx')
+
     pygame.display.flip()
 
     # Limit to 20 frames per second.
