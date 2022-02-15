@@ -8,7 +8,7 @@ Demo program that displays a webcam using OpenCV
 """
 #from vidgear.gears import NetGear
 import cv2
-stream = cv2.VideoCapture("http://169.254.110.249:8000/stream.mjpg")
+stream = cv2.VideoCapture(0)
 # define tweak flags
 #options = {"flag": 0, "copy": False, "track": False, "bidirectional_mode": True}
 

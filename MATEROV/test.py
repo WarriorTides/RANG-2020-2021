@@ -1,25 +1,12 @@
 import cv2
-from time import sleep
-key = cv2. waitKey(1)
-webcam = cv2.VideoCapture("http://169.254.110.249:8000/stream.mjpg")
-sleep(2)
-while True:
+img = cv2.imread("C:/Users/ISS/Documents/MATEROV/MATE_Prop_LengthCalc.png", cv2.IMREAD_GRAYSCALE)
+src = cv2.cuda_GpuMat()
+src.upload(img)
 
-    try:
-        check, frame = webcam.read()
-        print(check) #prints true as long as the webcam is running
-        print(frame) #prints matrix values of each framecd 
-        cv2.imshow("Capturing", frame)
-        key = cv2.waitKey(1)
-        if key == ord('q'):
-            webcam.release()
-            cv2.destroyAllWindows()
-            break
-    
-    except(KeyboardInterrupt):
-        print("Turning off camera.")
-        webcam.release()
-        print("Camera off.")
-        print("Program ended.")
-        cv2.destroyAllWindows()
-        break
+clahe = cv2.cuda.createCLAHE(clipLimit=5.0, tileGridSize=(8, 8))
+dst = clahe.apply(src, cv2.cuda_Stream.Null())
+
+result = dst.download()
+
+cv2.imshow("result", result)
+cv2.waitKey(0)
